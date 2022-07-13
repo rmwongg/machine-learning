@@ -344,7 +344,7 @@ final_fit %>%
 
 **Observations**
 
--   accurance = 0.87, or 87%. 
+-   accuracy = 0.87, or 87%. 
 
 -   I would say this is a fairly good prediction of the overall data. 
 

@@ -107,7 +107,8 @@ glimpse(d)
 
 *Observations*:
 
--   this is a huge dataset! there are 3793 rows, so 3793 cases or 3793 observations.
+-   this is a huge dataset! there are 3793 rows, so 3793 cases or 3793
+    observations.
 -   however, only 5 variables which makes this very doable.
 -   mostly numerical data, and one categorical data
 
@@ -333,7 +334,9 @@ Let's interpret the above. If the value of `correct` is `TRUE` when the
 predicted and known code are the same, what does the `percent` column
 tell us? Add one or more notes to the dashes below:
 
--   The % tells us the percentage of all codes that were predicted correctly by the model. Would this be kind of like the interrater reliability?
+-   The % tells us the percentage of all codes that were predicted
+    correctly by the model. Would this be kind of like the interrater
+    reliability?
 
 A short-cut to the above is below:
 
@@ -344,9 +347,9 @@ final_fit %>%
 
 **Observations**
 
--   accuracy = 0.87, or 87%. 
+-   accuracy = 0.87, or 87%.
 
--   I would say this is a fairly good prediction of the overall data. 
+-   I would say this is a fairly good prediction of the overall data.
 
 That's it for now; the core parts of machine learning are used in the
 above steps you took; what we'll do after this leaning lab only adds

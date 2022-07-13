@@ -1,6 +1,6 @@
 ---
 title: 'Learning Lab 1 Case Study'
-author: ""
+author: "Rachel Wong"
 date: "`r format(Sys.Date(),'%B %e, %Y')`"
 output:
   html_document:
@@ -12,7 +12,6 @@ output:
 editor_options:
   markdown:
     wrap: 72
-bibliography: lit/references.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -100,12 +99,17 @@ Note its dimensions --- especially how many rows it has. Add a few
 dashes after the chunk with your observations.
 
 ```{r}
+d
+d$mean_favorite_count
+glimpse(d)
 
 ```
 
 *Observations*:
 
--   
+-   this is a huge dataset! there are 3793 rows, so 3793 cases or 3793 observations.
+-   however, only 5 variables which makes this very doable.
+-   mostly numerical data, and one categorical data
 
 \*What other variables might we include?\*\* This is a great question to
 be asking - surely, including just the four variables we have cannot be
@@ -172,7 +176,8 @@ in the larger data. Do that in the chunk below:
 [Your Turn]{style="color: green;"} ⤵
 
 ```{r}
-
+data_train
+d
 ```
 
 ## Step 2: Engineer features and write down the recipe
@@ -226,6 +231,8 @@ my_mod <-
     logistic_reg() %>% 
     set_engine("glm") %>%
     set_mode("classification")
+
+my_mod
 ```
 
 ## Step 4: Fit model
@@ -274,6 +281,7 @@ Type `final_fit` below; this is the final, fitted model---one that can
 be interpreted further in the next step!
 
 ```{r}
+final_fit
 ```
 
 You may see a message/warning above or when you examine `final_fit`; you
@@ -325,7 +333,7 @@ Let's interpret the above. If the value of `correct` is `TRUE` when the
 predicted and known code are the same, what does the `percent` column
 tell us? Add one or more notes to the dashes below:
 
--   
+-   The % tells us the percentage of all codes that were predicted correctly by the model. Would this be kind of like the interrater reliability?
 
 A short-cut to the above is below:
 
@@ -336,9 +344,9 @@ final_fit %>%
 
 **Observations**
 
--   
+-   accurance = 0.87, or 87%. 
 
--   
+-   I would say this is a fairly good prediction of the overall data. 
 
 That's it for now; the core parts of machine learning are used in the
 above steps you took; what we'll do after this leaning lab only adds

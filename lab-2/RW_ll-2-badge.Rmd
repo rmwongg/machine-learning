@@ -76,9 +76,14 @@ data_with_final_grade <- data_with_final_grade %>%
 ###merging columns from one dataframe with other on specific files. Kind of like SPSS merge dataset. 
 d<-left_join(d, data_with_final_grade, by = c("student_id", "course_id")) 
 
-view(d)
-```
+d<-d%>%
+    mutate(subject=as.factor(subject))
 
+names(d)
+glimpse(d)
+
+#view(d)
+```
 
 
 ```{r} 
@@ -88,19 +93,28 @@ train_test_split <- initial_split(d, prop = .80)
 
 data_train <- training(train_test_split)
 
-kfcv <- vfold_cv(data_train, v = 20) # this differentiates this from what we did before
+kfcv <- vfold_cv(data_train, v = 10) # this differentiates this from what we did before. v = number of flows
+
+data_train
 
 ```
 
 Here's where you can add a new feature engineering step. For the sake of this badge, choose from among those options here: <https://recipes.tidymodels.org/reference/index.html>. You can see more - if helpful - here: <https://www.tmwr.org/recipes.html>
 
 ```{r}
-my_rec <- recipe(final_grade ~ ., data = d) %>% 
+my_rec <- recipe(final_grade ~ int + uv + tv + 
+                     student_id + course_id +
+                     sum_discussion_posts + sum_n_words +
+                     subject
+                 , data = data_train) %>%
+    update_role(student_id, course_id, new_role="ID Variable") %>% #this can be any string
     step_normalize(all_numeric_predictors()) %>% # standardizes numeric variables
     step_nzv(all_predictors()) %>% # remove predictors with a "near-zero variance"
     step_novel(all_nominal_predictors()) %>% # add a musing label for factors
     step_dummy(all_nominal_predictors()) %>%  # dummy code all factor variables
     step_impute_knn(all_predictors()) # impute missing data for all predictor variables
+
+my_rec
 
 ```
 
@@ -108,26 +122,30 @@ Run the remaining steps.
 
 ```{r}
 my_mod <-
-    logistic_reg() %>% 
-    set_engine("glm") %>%
-    set_mode("classification")
+    linear_reg() %>% 
+    set_engine("lm") %>%
+    set_mode("regression")
 
 my_wf <-
     workflow() %>%
     add_model(my_mod) %>% 
     add_recipe(my_rec)
 
-fitted_model <- fit_resamples(my_wf, resamples = kfcv,
+fitted_model_resamples <- fit_resamples(my_wf, resamples = kfcv,
                               control = control_grid(save_pred = TRUE)) # this allows us to inspect the predictions
+#inspect predictions
 
-fitted_model %>% 
+fitted_model_resamples %>% 
     unnest(.metrics) %>% 
-    filter(.metric == "accuracy") # we also get another metric, the ROC; we focus just on accuracy for now
+    filter(.metric == "rmse") # we also get another metric, the ROC; we focus just on accuracy for now
+
+fitted_model_resamples%>%
+    collect_metrics()
 ```
 
 Did that feature engineering make any difference compared to the mean predictive accuracy you found in the case study? Add a few notes below:
 
--   
+-   The feature engineering did improve the mean predictive accuracy that I found in the case study (m =8.90). I tried playing around by adding additional predictors and remove predictors to the model in this badge activity and it appears that the mean predictive accuracy hovers around this 20.5 range. 
 
 ### Knit & Submit
 

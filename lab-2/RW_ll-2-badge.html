@@ -392,7 +392,12 @@ collected through roughly the first one month of the class? How might
 this model be used in practice?</li>
 </ol>
 <ul>
-<li></li>
+<li>I obtained a mean predictive accuracy of about 8.9 (the average
+distance(?) between the predicted scores from the actual observations)
+from the case study, so I would say this is a fairly successful
+predictive model of students’ success. I think this model will be useful
+for identifying at-risk students in the course early on so that proper
+interventions can be made.</li>
 </ul>
 <ol start="3" style="list-style-type: decimal">
 <li>Would you be comfortable using this? What if you read about someone
@@ -400,14 +405,23 @@ using such a model as a reviewer of research. Please add your thoughts
 and reflections following the bullet point below.</li>
 </ol>
 <ul>
-<li></li>
+<li>I would probably be comfortable using this. If I were a reviewer, I
+would probably be interested to see what predictors were available in
+the dataset and how the researchers finally decided on their final list
+of predictors to input into the models. I would also be interested in
+seeing the mean predictive accuracy for some of the other models. Kind
+of like how one might present results from hierarchical linear
+regression.</li>
 </ul>
 <ol start="3" style="list-style-type: decimal">
 <li>How might the model be improved? Share any ideas you have at this
 time below:</li>
 </ol>
 <ul>
-<li></li>
+<li>The only thing I can really think of right now has to do with the
+variables available to input into the model. Being selective with the
+variables to input into the model may help… but it could also worsen the
+model.</li>
 </ul>
 <p>Part B: Again, use the institutional library (e.g. <a href="https://www.lib.ncsu.edu/#articles">NCSU Library</a>), <a href="https://scholar.google.com/">Google Scholar</a> or search engine
 to locate a research article, presentation, or resource that applies
@@ -487,7 +501,7 @@ recipe.</p>
 ## ✖ dplyr::lag()      masks stats::lag()
 ## ✖ yardstick::spec() masks readr::spec()
 ## ✖ recipes::step()   masks stats::step()
-## • Use suppressPackageStartupMessages() to eliminate package startup messages</code></pre>
+## • Dig deeper into tidy modeling with R at https://www.tmwr.org</code></pre>
 <pre class="r"><code>##data wrangling (due to error in code)
 ###this original datafile has 10,000+ rows because of an error
 d &lt;- read_csv(&quot;data/online-sci-data-joined.csv&quot;) </code></pre>
@@ -709,11 +723,14 @@ fitted_model_resamples %&gt;%
 predictive accuracy you found in the case study? Add a few notes
 below:</p>
 <ul>
-<li>The feature engineering did improve the mean predictive accuracy
-that I found in the case study (m =8.90). I tried playing around by
-adding additional predictors and remove predictors to the model in this
-badge activity and it appears that the mean predictive accuracy hovers
-around this 20.5 range.</li>
+<li>I don’t think the feature engineering improved the model.</li>
+<li>I don’t think has anything to do with the data, rather, this is
+likely due to the choice of predictors entered into the model. I think
+we could have entered better predictors that are more likely to provide
+insightful information about students performance. For example, I’m not
+entirely certain that course_id or sum_n_words are fully related to
+performance. Perhaps with other/better predictors, we would have gotten
+a much better mean predictive accuracy.</li>
 </ul>
 </div>
 <div id="knit-submit" class="section level3">

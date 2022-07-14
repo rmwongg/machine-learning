@@ -102,8 +102,9 @@ at the data and do some processing of it.
 
 ```{r}
 d <- read_csv("data/data-to-model-no-gradebook.csv")
+d
 d <- select(d, -time_spent) # this is another outcome, so we'll cut this here
-
+d
 gb <- read_csv("data/data-to-model-gradebook.csv")
 ```
 
@@ -164,7 +165,7 @@ function; try that out below (asking for help or searching the Internet
 for help as needed!).
 
 ```{r, eval = FALSE}
-
+view(d)
 ```
 
 Let's first consider what these variables are, focusing just on some key
@@ -212,7 +213,7 @@ read more about mutate [here](https://r4ds.had.co.nz/transform.html)
 
 ```{r, warning = FALSE}
 gb <- gb %>% 
-    mutate()
+    mutate(percent_earned=points_earned/points_possible)
 ```
 
 Finally, let's create three features from the gradebook data:
@@ -250,7 +251,10 @@ Let's talk a look at the joined data to make sure everything is looking
 as we intend it to. Inspect the data using the code chunk below:
 
 ```{r}
-
+d
+d<- d %>%
+    mutate(last_access_date = NULL)
+glimpse(d)
 ```
 
 ## Step 1. Split data
@@ -312,7 +316,7 @@ recipe.
 -   `step_impute_knn(all_predictors(), all_outcomes())`
 
 ```{r,}
-my_rec <- recipe(final_grade ~ ., data = d) %>% 
+my_rec <- recipe(final_grade ~ ., data = data_train) %>% 
     step_normalize(all_numeric_predictors()) %>% # standardizes numeric variables
     step_nzv(all_predictors()) %>% # remove predictors with a "near-zero variance"
     step_novel(all_nominal_predictors()) %>% # add a musing label for factors
@@ -334,7 +338,7 @@ Specifically, we use:
 # specify model
 my_mod <-
     linear_reg() %>% 
-    set_engine("glm") %>%
+    set_engine("lm") %>%
     set_mode("regression")
 ```
 
@@ -390,14 +394,16 @@ should generally not be used to select between competing model
 specifications.
 
 ```{r}
-fitted_model %>% 
+fitted_model_resamples%>% ##this needs to be fitted_model_resamples
     unnest(.metrics) %>% 
-    filter(.metric == "rmse") # we also get another metric, the RSQ; we focus just on RMSE for nwo
+    filter(.metric == "rmse") # we also get another metric, the RSQ; we focus just on RMSE for now
+
+
 ```
 
 Running the code below calculates the *mean* of the metrics we inspected
 in the previous chunk. Focus on the **mean** variable for the accuracy
-metric. This can be interpreted in the precise same was as our accuracy
+metric. This can be interpreted in the precise same way as our accuracy
 measure we calculated in learning lab 1 - this is the percentage of
 students the model correctly classified as passing or not passing the
 course.
